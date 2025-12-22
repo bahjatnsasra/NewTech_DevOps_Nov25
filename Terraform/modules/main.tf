@@ -22,4 +22,5 @@ module "ec2-instance" {
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "6.1.5"
   create_eip = true
+  create_security_group = true
 }
