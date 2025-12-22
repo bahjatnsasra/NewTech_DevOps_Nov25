@@ -7,8 +7,8 @@ name: Python Tests
 on:
   push:              # Run when code is pushed
     branches: [ main ]
-  pull_request:      # Run when a pull request is created
-    branches: [ main ]
+  #pull_request:      # Run when a pull request is created
+   # branches: [ main ]
 
 jobs:
   # Job 1: Run our tests
