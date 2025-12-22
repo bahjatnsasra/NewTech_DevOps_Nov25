@@ -20,4 +20,6 @@ jobs:
 
       - name: run tests
         run: |
+          cd GH_Actions
+          cd lab1
           python -m unittest test_calculator.py -v
