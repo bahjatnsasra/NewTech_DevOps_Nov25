@@ -1,0 +1,24 @@
+name: mini-project1-workflow
+on:
+  pull_request:
+    branches: [ "main" ]
+    types: [opened, edited]
+
+jobs:
+  setup_environment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - run: pip install -r requirements.txt
+      - name: flake8 Lint
+        uses: py-actions/flake8@v2
+        with:
+          error_classes: E,W
+      - name: Bandit Security Scan
+        uses: shundor/python-bandit-scan@v1
+        with:
+          path: "."
+          level: "medium"
