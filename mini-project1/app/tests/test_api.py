@@ -11,6 +11,10 @@ from main import app
 def client():
     """Create a test client for the Flask app"""
     app.config['TESTING'] = True
+    # Reset the todo_manager for each test
+    from main import todo_manager
+    todo_manager.todos = {}
+    todo_manager.next_id = 1
     with app.test_client() as client:
         yield client
 

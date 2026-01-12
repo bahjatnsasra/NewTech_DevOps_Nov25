@@ -86,7 +86,7 @@ def get_todo(todo_id):
 def create_todo():
     """Create a new todo"""
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True)
         
         if not data:
             return jsonify({
@@ -120,7 +120,7 @@ def create_todo():
 def update_todo(todo_id):
     """Update a todo"""
     try:
-        data = request.get_json()
+        data = request.get_json(silent=True)
         
         if not data:
             return jsonify({
