@@ -1,0 +1,39 @@
+name: deploy to ec2
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  setup_environment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: |
+          pip install -r requirements.txt
+
+      - name: Running Tests With Coverage
+        run: |
+          pytest app/tests/ --cov=app --cov-report=xml --cov-report=term-missing
+
+      - name: SSH_into_EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOSTNAME: ${{secrets.EC2_HOST}}
+          USER_NAME: ${{secrets.USER_NAME}}
+        run: |
+          echo "$PRIVATE_KEY" > private_key
+          chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} << 'EOF'
+
+          git pull origin main 
+          pip install -r requirements.txt
+          
+          sudo systemctl restart flaskapp.service
+          
+          curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/health
+          if [ "$STATUS" -ne 200 ]; then echo "You Are Not Healthy" exit 1 fi
+          echo "You Are Healthy"
+          EOF

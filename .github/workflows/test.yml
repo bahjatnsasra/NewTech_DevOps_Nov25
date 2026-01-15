@@ -2,23 +2,38 @@ name: mini-project1-workflow
 on:
   pull_request:
     branches: [ "main" ]
-    types: [opened, edited]
+    types: [opened, edited, synchronize]
 
 jobs:
   setup_environment:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
-      - run: pip install -r requirements.txt
+          python-version: '3.11'
+      - run: |
+          pip install -r requirements.txt
+
       - name: flake8 Lint
         uses: py-actions/flake8@v2
         with:
           error_classes: E,W
+
       - name: Bandit Security Scan
         uses: shundor/python-bandit-scan@v1
         with:
           path: "."
           level: "medium"
+
+      - name: Running Tests With Coverage
+        run: |
+          pytest app/tests/ --cov=app --cov-report=xml --cov-report=term-missing
+
+
+      - name: Check coverage threshold
+        uses: themichaelhall/check-code-coverage@v2
+        with:
+          report: coverage.xml
+          required-percentage: 80
