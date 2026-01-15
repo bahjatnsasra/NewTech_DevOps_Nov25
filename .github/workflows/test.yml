@@ -16,16 +16,20 @@ jobs:
       - run: |
           pip install -r requirements.txt
 
-      - name: flake8 Lint
-        uses: py-actions/flake8@v2
-        with:
-          error_classes: E,W
 
       - name: Bandit Security Scan
         uses: shundor/python-bandit-scan@v1
         with:
           path: "."
           level: "medium"
+
+
+      - name: flake8 Lint
+        uses: py-actions/flake8@v2
+        with:
+          error_classes: E,W
+
+
 
       - name: Running Tests With Coverage
         run: |
