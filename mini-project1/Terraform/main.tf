@@ -20,7 +20,7 @@
   key_name      = "my-key"
   volume_size   = 10
 
-  instance_name = "mini-project1-ec2"
+  instance_name = "mini-project1-ec2_2"
   environment   = "dev"
   project       = "mini-project"
 }

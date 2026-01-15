@@ -1,85 +1,47 @@
 #!/bin/bash
 
-apt-get update -y && apt-get upgrade -y
+apt-get update -y
+apt-get upgrade -y
 
-apt-get install -y python3.11 python3-pip git
+# Install Python 3 (whatever version Ubuntu 24.04 has, which is 3.12)
+apt-get install -y python3 python3-pip python3-venv git
 
-useradd -m -s /bin/bash bahjat-mini-project
-mkdir -p /home/bahjat-mini-project/app
-chown -R bahjat-mini-project:bahjat-mini-project /home/bahjat-mini-project/app
-
-cd /home/bahjat-mini-project/app
+mkdir -p /home/ubuntu/flask-app
+cd /home/ubuntu/flask-app
 
 git clone https://github.com/bahjatnsasra/NewTech_DevOps_Nov25.git .
-chown -R bahjat-mini-project:bahjat-mini-project /home/bahjat-mini-project/app
 
+cd mini-project1
+
+# Remove the empty minienv from repo and create a proper one
+rm -rf minienv
 python3 -m venv minienv
 
+# Now activate it
 source minienv/bin/activate
 
+cd app
 pip install --upgrade pip
 pip install -r requirements.txt
-
 pip install gunicorn
 
-tee /etc/systemd/system/flaskapp.service > /dev/null <<EOF
+cat > /etc/systemd/system/flaskapp.service <<EOF
 [Unit]
 Description=Gunicorn service for Flask app
 After=network.target
 
 [Service]
 User=ubuntu
-Group=bahjat-mini-project
-WorkingDirectory=/home/ubuntu/app/mini-project1/app
-Environment="PATH=/home/bahjat-mini-project/app/minienv/bin"
-ExecStart=/home/ubuntu/app/minienv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 main:app
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/flask-app/mini-project1/app
+Environment="PATH=/home/ubuntu/flask-app/mini-project1/minienv/bin"
+ExecStart=/home/ubuntu/flask-app/mini-project1/minienv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 main:app
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-systemctl daemon-reload
-systemctl enable flaskapp
-systemctl start flaskapp
-
-
-#!/bin/bash
-
-apt-get update -y && apt-get upgrade -y
-
-apt-get install -y python3.11 python3-pip git
-
-useradd -m -s /bin/bash bahjat-mini-project
-mkdir -p /home/bahjat-mini-project/app
-chown -R bahjat-mini-project:bahjat-mini-project /home/bahjat-mini-project/app
-
-cd /home/bahjat-mini-project/app
-
-git clone https://github.com/bahjatnsasra/NewTech_DevOps_Nov25.git .
-chown -R bahjat-mini-project:bahjat-mini-project /home/bahjat-mini-project/app
-
-python3 -m venv /home/bahjat-mini-project/app/minienv
-
-/home/bahjat-mini-project/app/minienv/bin/pip install --upgrade pip
-/home/bahjat-mini-project/app/minienv/bin/pip install -r /home/bahjat-mini-project/app/mini-project1/app/requirements.txt
-
-/home/bahjat-mini-project/app/minienv/bin/pip install gunicorn
-
-tee /etc/systemd/system/flaskapp.service > /dev/null <<EOF
-[Unit]
-Description=Gunicorn service for Flask app
-After=network.target
-
-[Service]
-User=bahjat-mini-project
-Group=bahjat-mini-project
-WorkingDirectory=/home/bahjat-mini-project/app/mini-project1/app
-Environment="PATH=/home/bahjat-mini-project/app/minienv/bin"
-ExecStart=/home/bahjat-mini-project/app/minienv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 main:app
-
-[Install]
-WantedBy=multi-user.target
-EOF
+chown -R ubuntu:ubuntu /home/ubuntu/flask-app
 
 systemctl daemon-reload
 systemctl enable flaskapp
