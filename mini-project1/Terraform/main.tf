@@ -7,7 +7,7 @@
     source = "./Modules/SG"
 
     vpc_id = module.vpc.vpc_id
-    my_ip  = "94.188.204.218/32"
+    my_ip  = "93.175.45.172/32"
   }
 
   module "ec2" {

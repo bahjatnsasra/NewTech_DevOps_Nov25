@@ -28,11 +28,11 @@ Description=Gunicorn service for Flask app
 After=network.target
 
 [Service]
-User=bahjat-mini-project
+User=ubuntu
 Group=bahjat-mini-project
-WorkingDirectory=/home/bahjat-mini-project/app
+WorkingDirectory=/home/ubuntu/app/mini-project1/app
 Environment="PATH=/home/bahjat-mini-project/app/minienv/bin"
-ExecStart=/home/bahjat-mini-project/app/minienv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 main:app
+ExecStart=/home/ubuntu/app/minienv/bin/gunicorn --workers 3 --bind 0.0.0.0:5000 main:app
 
 [Install]
 WantedBy=multi-user.target
