@@ -30,7 +30,7 @@ jobs:
 
           git pull origin main 
           cd /home/bahjat-mini-project/app/mini-project1/app 
-          /home/bahjat-mini-project/app/minienv/bin/pip install -r requirements.txt
+          pip install -r requirements.txt
           
           sudo systemctl restart flaskapp.service
           
