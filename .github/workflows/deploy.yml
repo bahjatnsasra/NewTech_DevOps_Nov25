@@ -29,7 +29,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} << 'EOF'
 
           git pull origin main 
-          pip install -r requirements.txt
+          cd /home/bahjat-mini-project/app/mini-project1/app 
+          /home/bahjat-mini-project/app/minienv/bin/pip install -r requirements.txt
           
           sudo systemctl restart flaskapp.service
           
