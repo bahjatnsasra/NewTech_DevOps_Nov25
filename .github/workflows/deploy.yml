@@ -16,7 +16,7 @@ jobs:
 
       - name: Running Tests With Coverage
         run: |
-          pytest app/tests/ --cov=app --cov-report=xml --cov-report=term-missing
+          pytest mini-project1/app/tests/ --cov=app --cov-report=xml --cov-report=term-missing
 
       - name: SSH_into_EC2
         env:
