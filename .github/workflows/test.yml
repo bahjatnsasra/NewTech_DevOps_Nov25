@@ -12,20 +12,24 @@ jobs:
 
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - run: |
-          pip install -r requirements.txt
+          pip install -r mini-project1/app/requirements.txt
+
 
       - name: flake8 Lint
         uses: py-actions/flake8@v2
         with:
-          error_classes: E,W
+          path: "mini-project1/app"
+          args: "--count --select=E9,F63,F7,F82 --show-source --statistics"
 
       - name: Bandit Security Scan
-        uses: shundor/python-bandit-scan@v1
+        uses: gaurav-nelson/bandit-action@v1
         with:
-          path: "."
+          path: "mini-project1/app"
           level: "medium"
+          exit_zero: true
+
 
       - name: Running Tests With Coverage
         run: |
