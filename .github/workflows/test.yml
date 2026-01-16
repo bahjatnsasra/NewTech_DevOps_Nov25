@@ -20,8 +20,8 @@ jobs:
       - name: flake8 Lint
         uses: py-actions/flake8@v2
         with:
-          error_classes: E,W
-
+          path: "mini-project1/app"
+          args: "--count --select=E9,F63,F7,F82 --show-source --statistics"
 
       - name: Bandit Security Scan
         uses: mdegis/bandit-action@v1.0
